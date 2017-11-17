@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 *.class
 *.log
 .idea/
 *.iml
 target/
+=======
+.idea/
+target/
+*.class
+*.log
+*.iml
+>>>>>>> 69f36e241e6a77d98a6b7ad8a107d4c101415904
