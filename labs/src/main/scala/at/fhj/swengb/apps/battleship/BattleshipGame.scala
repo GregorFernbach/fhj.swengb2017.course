@@ -10,7 +10,7 @@ import scala.util.Random
   * @param y logical y coordinate of a part of a battleship
   *
   */
-case class BattlePos(x: Int, y: Int)
+case class BattlePos(x: Int, y: Int, hit: Boolean)
 
 object BattleField {
 
@@ -73,7 +73,7 @@ case class BattleField(width: Int, height: Int, fleet: Fleet) {
     * All positions in this battlefield
     */
   val allPos: Set[BattlePos] = (for {x <- 0 until width
-                                     y <- 0 until height} yield BattlePos(x, y)).toSet
+                                     y <- 0 until height} yield BattlePos(x, y, false)).toSet
 
 
   val availablePos: Set[BattlePos] = allPos -- fleet.occupiedPositions
@@ -106,8 +106,8 @@ case class Vessel(name: VesselName, startPos: BattlePos, direction: Direction, s
   // parts a vessel consists of parts, they have to be connected either in x or in y direction
   final val occupiedPos: Set[BattlePos] =
     direction match {
-      case Horizontal => (startPos.x until (startPos.x + size)).map(x => BattlePos(x, startPos.y)).toSet
-      case Vertical => (startPos.y until (startPos.y + size)).map(y => BattlePos(startPos.x, y)).toSet
+      case Horizontal => (startPos.x until (startPos.x + size)).map(x => BattlePos(x, startPos.y, false)).toSet
+      case Vertical => (startPos.y until (startPos.y + size)).map(y => BattlePos(startPos.x, y, false)).toSet
     }
 
 }

@@ -2,7 +2,7 @@ package at.fhj.swengb.apps.battleship.jfx
 
 import javafx.scene.layout.GridPane
 
-import at.fhj.swengb.apps.battleship.{BattleField, BattlePos, Vessel}
+import at.fhj.swengb.apps.battleship.{BattleField, BattlePos, Fleet, Vessel}
 
 
 
@@ -20,8 +20,8 @@ case class BattleShipGame(battleField: BattleField,
     */
   private val cells = for {x <- 0 until battleField.width
                            y <- 0 until battleField.height
-                           pos = BattlePos(x, y)} yield {
-    BattleCell(BattlePos(x, y), getCellWidth(x), getCellHeight(y), log, battleField.fleet.findByPos(pos), updateGameState)
+                           pos = BattlePos(x, y, false)} yield {
+    BattleCell(BattlePos(x, y, false), getCellWidth(x), getCellHeight(y), log, battleField.fleet.findByPos(pos), updateGameState)
   }
 
   // TODO implement a message which complains about the user if he hits a vessel more than one time on a specific position
@@ -29,15 +29,45 @@ case class BattleShipGame(battleField: BattleField,
   // TODO make sure that when a vessel was destroyed, it is sunk and cannot be destroyed again. it is destroyed already.
   // TODO if all vessels are destroyed, display this to the user
   // TODO reset game state when a new game is started
-  def updateGameState(vessel: Vessel, pos: BattlePos): Unit = ()
 
+  def updateGameState(vessel: Vessel, pos: BattlePos): Unit = {
 
-  // 'display' cells
-  def init(gridPane: GridPane): Unit = {
-    gridPane.getChildren.clear()
-    for (c <- cells) gridPane.add(c, c.pos.x, c.pos.y)
-    cells.foreach(c => c.init)
+    //log("Vessel was hit" + vessel.name + ", at position" + pos)
+      if (!sunkShips.contains(vessel)) {
+        if (hits.contains(vessel)) {
+
+          val alreadyHit: Set[BattlePos] = hits(vessel)
+          val allCurrentHits = alreadyHit + pos
+          if (alreadyHit.contains(pos)) {
+            log("I have already been hit")
+          } else {
+            hits = hits.updated(vessel, alreadyHit + pos)
+          }
+
+          if (allCurrentHits.equals(vessel.occupiedPos)) {
+            log("The vessel" + vessel.name + " was destroyed")
+            sunkShips = sunkShips + vessel
+            if (sunkShips.equals(battleField.fleet.vessels)){
+              log("GAME OVER")
+            }
+          }
+        }
+        else {
+          hits = hits.updated(vessel, Set(pos))
+        }
+
+      }
+      else {
+        log("Vessel is on the ground of the sea!")
+      }
   }
+
+    // 'display' cells
+    def init(gridPane: GridPane): Unit = {
+      gridPane.getChildren.clear()
+      for (c <- cells) gridPane.add(c, c.pos.x, c.pos.y)
+      cells.foreach(c => c.init)
+    }
 
 
   /**

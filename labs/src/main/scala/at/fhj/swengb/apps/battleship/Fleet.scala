@@ -22,10 +22,10 @@ object Fleet {
             a <- 0 until v} yield {
         val direction = if (Random.nextBoolean()) Horizontal else Vertical
         k match {
-          case x if x == classOf[Battleship] => new Battleship(s"Battleship $i $a", BattlePos(0, 0), direction)
-          case x if x == classOf[Cruiser] => new Cruiser(s"Cruiser $i $a", BattlePos(0, 0), direction)
-          case x if x == classOf[Destroyer] => new Destroyer(s"Destroyer $i $a", BattlePos(0, 0), direction)
-          case x if x == classOf[Submarine] => new Submarine(s"Submarine $i $a", BattlePos(0, 0), direction)
+          case x if x == classOf[Battleship] => new Battleship(s"Battleship $i $a", BattlePos(0, 0, false), direction)
+          case x if x == classOf[Cruiser] => new Cruiser(s"Cruiser $i $a", BattlePos(0, 0, false), direction)
+          case x if x == classOf[Destroyer] => new Destroyer(s"Destroyer $i $a", BattlePos(0, 0, false), direction)
+          case x if x == classOf[Submarine] => new Submarine(s"Submarine $i $a", BattlePos(0, 0, false), direction)
         }
       }).toSet
 
@@ -34,18 +34,18 @@ object Fleet {
   }
 
   val Default: Fleet = {
-    val battleships: Set[Vessel] = Set(new Battleship("Archduke John", BattlePos(0, 0), Vertical))
-    val cruisers: Set[Vessel] = Set(new Cruiser("Cruz", BattlePos(1, 0), Vertical), new Cruiser("Santa", BattlePos(2, 0), Vertical))
+    val battleships: Set[Vessel] = Set(new Battleship("Archduke John", BattlePos(0, 0, false), Vertical))
+    val cruisers: Set[Vessel] = Set(new Cruiser("Cruz", BattlePos(1, 0, false), Vertical), new Cruiser("Santa", BattlePos(2, 0, false), Vertical))
     val destroyers: Set[Vessel] = Set(
-      new Destroyer("Graz", BattlePos(5, 5), Horizontal),
-      new Destroyer("Wien", BattlePos(0, 6), Horizontal),
-      new Destroyer("Linz", BattlePos(0, 7), Horizontal),
+      new Destroyer("Graz", BattlePos(5, 5, false), Horizontal),
+      new Destroyer("Wien", BattlePos(0, 6, false), Horizontal),
+      new Destroyer("Linz", BattlePos(0, 7, false), Horizontal),
     )
     val submarines: Set[Vessel] = Set(
-      new Submarine("A", BattlePos(6, 6), Horizontal),
-      new Submarine("A", BattlePos(1, 6), Horizontal),
-      new Submarine("A", BattlePos(3, 2), Horizontal),
-      new Submarine("A", BattlePos(4, 4), Horizontal),
+      new Submarine("A", BattlePos(6, 6, false), Horizontal),
+      new Submarine("A", BattlePos(1, 6, false), Horizontal),
+      new Submarine("A", BattlePos(3, 2, false), Horizontal),
+      new Submarine("A", BattlePos(4, 4, false), Horizontal),
     )
 
     val fleet: Set[Vessel] = battleships ++ cruisers ++ destroyers ++ submarines

@@ -28,7 +28,7 @@ case class BattleCell(pos: BattlePos
         log(s"Missed. Just hit water.")
         setFill(Color.YELLOW)
       case Some(v) =>
-        log(s"Hit an enemy vessel!")
+        //log(s"Hit an enemy vessel!")
         updateGameState(v, pos)
         setFill(Color.RED)
     }

@@ -8,7 +8,7 @@ import org.scalatest.WordSpecLike
   */
 class FleetSpec extends WordSpecLike {
 
-  val bp = BattlePos(0, 0)
+  val bp = BattlePos(0, 0, false)
   val battleship = new Battleship("a name", bp, Vertical)
   val cruiser = new Cruiser("a cruiser", bp, Vertical)
   val destroyer = new Destroyer("a destroyer", bp, Vertical)
